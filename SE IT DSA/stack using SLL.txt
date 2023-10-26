@@ -1,0 +1,90 @@
+#include<iostream>
+using namespace std;
+struct node{
+    int data;
+    node *next;
+    node(int x){
+        data=x;
+        next=NULL;
+    }
+};
+//to make it public 
+class stack1{
+node *top;
+    public:
+    stack1(){
+        top=NULL;
+    }
+int isEmpty(){
+    if(top==NULL)
+    return 1;
+    else
+    return 0;
+}
+void push(int x){
+    node *temp = new node(x);
+    if(top==NULL){
+        temp->next=NULL;
+    }
+    else{
+        temp->next=top;
+    }
+    top=temp;
+}
+void pop(){
+    if(isEmpty()==1){
+        cout<<"stack UNDERFLOW\n";
+    }
+    else{
+        node *temp=top;
+        cout<<temp->data<<"deleted from top successfully \n";
+        top=top->next;
+        delete temp;
+    }
+}
+void display(){
+    node *ptr = top;
+    if(isEmpty()==1){
+        cout<<"stack is empty \n";
+    }
+    else{
+        while(ptr != NULL){
+            cout<< ptr->data<<' ';
+            ptr = ptr->next;
+        }
+        cout<<ptr->data<<endl;
+        }
+    }
+};
+int main(){
+    stack1 sk;
+ int choice,x;
+ do{
+    cout<<"enter 1 to push data \n";
+    cout<<"enter 2 to pop data \n";
+    cout<<"enter 3 to display data \n";
+    cout<<"enter 0 to exit data \n";
+
+    cout<<"enter your choice : \n";
+    cin>>choice;
+    switch(choice)
+ {
+    case 1:
+        cout<<"enter the value: \n";
+        cin>>x;
+        sk.push(x);
+        break;
+    case 2:
+        sk.pop();
+        break;
+    case 3:
+        sk.display();
+        break;
+    default:
+        cout<<"enter valid value \n";
+ }
+ }
+while(choice!=0);
+return 0;
+}
+
