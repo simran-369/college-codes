@@ -1,0 +1,67 @@
+import java.util.*;
+abstract class shape{
+    abstract void input();
+    abstract void compute_area();
+}
+class triangle extends shape{
+    double base;
+    double height;
+    void input(){
+      Scanner sc = new Scanner(System.in);
+      System.out.println("Enter the BASE of TRIANGLE");
+      base = sc.nextDouble();
+      System.out.println("Enter the HEIGHT of BASE");
+      height = sc.nextDouble();
+    }
+    void compute_area(){
+        double area;
+        area=0.5 * base * height;
+        System.out.println("Area of triangle is " + area + "unit square");
+    }
+}
+class rectangle extends shape{
+    double length;
+    double breadth;
+    void input(){
+      Scanner sc =  new Scanner(System.in);
+      System.out.println("Enter the LENGTH of RECTANGLE");
+      length = sc.nextDouble();
+      System.out.println("Enter the BREADTH of RECTANGLE");
+      breadth = sc.nextDouble();
+    }
+    void compute_area(){
+        double area;
+        area = length * breadth;
+        System.out.println("Area of rectangle is " + area + "unit square");
+    }
+}
+public class ass4{
+    public static void main(String[] arg){
+        int choice;
+        shape t = new triangle();
+        shape r = new rectangle();
+        Scanner sc= new Scanner(System.in);
+        do{
+            System.out.println("\n MENU :   ");
+            System.out.println("1. area of triangle : ");
+            System.out.println("2. area of rectangle : ");
+            System.out.println("3. exit code : ");
+            System.out.println("ENTER CHOICE");
+            choice=sc.nextInt();
+            System.out.print("\n");
+            switch(choice){
+                case 1 :
+                    t.input();
+                    t.compute_area();
+                    break;
+                case 2 :
+                    r.input();
+                    r.compute_area();
+                    break;
+                case 3 :
+                    System.out.println("exit code : ");
+                    break;
+            } 
+        }while(choice!=3);
+    }
+}
