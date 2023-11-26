@@ -1,80 +1,92 @@
-package oppsAss;
+/*code for complex number */
 import java.util.*;
-abstract class Shape{ //creation of abstract class
-	double num1,num2;
-	void input() { // creation of non-abstract method
-		Scanner sc=new Scanner(System.in);
-		System.out.println("enter FIRST PARAMETER of given shape  : ");
-		num1=sc.nextDouble();
-		System.out.println("enter SECOND PARAMETER of given shape : ");
-		num2=sc.nextDouble();	
-	}
-	abstract void compute_area();
-		//creation of abstract method
-	
+public class Complex{
+float real, img;
+Scanner sc= new Scanner(System.in);
+/* function for taking input*/
+public void giveInput(){
+    System.out.print("REAL part of num= ");
+    real = sc.nextFloat();
+    System.out.print("IMAGINARY part num= ");
+    img = sc.nextFloat();
 }
-class Triangle extends Shape{
-	void compute_area() { //using inheritance to use abstract method
-		double area = 0.5*num1*num2;
-		System.out.println("the area of triangle is : "+ area + " unit square");
-	}
+/*function to perform add*/
+public Complex add(Complex num2){
+    Complex c3= new Complex();
+    c3.real = this.real + num2.real;
+    c3.img = this.img + num2.img;
+    return c3;
 }
-class Rectangle extends Shape{
-	void compute_area() { //run time polymorphism
-		double area = num1*num2;
-		System.out.println("the area of rectangle is : "+ area + " unit square");
-	}
+/*function to perform subtraction*/
+public Complex sub(Complex num2){
+    Complex c4= new Complex();
+    c4.real = this.real - num2.real;
+    c4.img = this.img - num2.img;
+    return c4;
 }
-class Circle extends Shape{
-	double radius;
-	void input() {
-		Scanner sc=new Scanner(System.in);
-		System.out.println("enter radius");
-		radius=sc.nextDouble();
-	}
-	void compute_area() {
-		double area= 3.14*radius*radius;
-		System.out.println("area of given circle is : "+ area + " unit square");
-	}
+/*function to perform multiplication*/
+public Complex mult(Complex num2){
+    Complex c5= new Complex();
+    c5.real = (this.real*num2.real)-(this.img*num2.img);
+    c5.img = (this.real*num2.img) +(this.img* num2.real);
+    return c5;
 }
-public class Driver {
+/*function to perform division*/
 
-	public static void main(String[] args) {
-		Shape t = new Triangle(); //object creation
-		Shape r = new Rectangle();
-		Shape c= new Circle();
-		Scanner sc = new Scanner(System.in);
-		int choice;
-		do {
-			System.out.println("*******MENU*******");
-			System.out.println("press 1. for TRIANGLE");
-			System.out.println("press 2. for RECTANGLE");
-			System.out.println("press 3. for CIRCLE");
-			System.out.println("press 4. for EXIT");
-			System.out.println("enter your CHOICE");
-			choice=sc.nextInt();
-			switch(choice) {
-			case 1 :
-				t.input();
-				t.compute_area(); //showcasing method-overridding
-				break;
-			case 2 :
-				r.input();
-				r.compute_area();
-				break;
-			case 3 :
-				c.input();
-				c.compute_area();
-				break;
-			case 4 :
-				System.out.println("exit code : ");
-				break;
-			default:
-				System.out.println("enter valid choice");
-				break;
-			}
-		}while(choice!=3);
-		
-	}
-
+public Complex div(Complex num2){
+    
+    Complex c6= new Complex();
+    c6.real = ((this.real*num2.real)+(this.img*num2.img))/((num2.real* num2.real) + (num2.img*num2.img));
+    c6.img = ((this.img* num2.real) - (num2.img*this.real))/((num2.real* num2.real) + (num2.img*num2.img));
+    return c6;
+}
+/*function to create menu to perform operations*/
+public static void main(String [] args){
+    Complex num1 = new Complex();
+    Complex num2 = new Complex();
+    Scanner obj = new Scanner(System.in);
+    System.out.println("complex num1 :  ");
+    num1.giveInput();
+    System.out.println("complex num2: ");
+    num2.giveInput();
+    while(num2.real==0 && num2.img==0){
+        System.out.println("RE-ENTER the complex number 2: ");
+        num2.giveInput();
+    }
+    int choice;
+    do{
+        System.out.println("...MENU given below : ");
+        System.out.println("1.for ADD ");
+        System.out.println("2.for SUBTRACT ") ;
+        System.out.println("3.for MULTIPLY ");
+        System.out.println("4.for DIVIDE ");
+        System.out.println("5.for EXIT");
+        System.out.println("Enter your choice :  ");
+        choice = obj.nextInt();
+        /*using switch to perform operation according to choice*/
+        switch(choice){
+            case 1 :
+                num1=num1.add(num2);
+                System.out.println("addition of complex numbers = " + num1.real +"+" + num1.img +"i");
+                break;
+            case 2 :
+                num1= num1.sub(num2);
+                System.out.println("substraction of complex numbers = " + num1.real +"+" + num1.img +"i");
+                break;
+            case 3 :
+                num1=num1.mult(num2);
+                System.out.println("multiplication of complex numbers = " + num1.real +"+" + num1.img +"i");
+                break;
+            case 4 :
+                num1=num1.div(num2);
+                System.out.println("division of complex numbers = " + num1.real +"+" + num1.img +"i");
+                break;
+             case 5 :
+                 System.out.println("exit ");
+                 break;
+            default:
+                break;
+        }
+    }while(choice!=6);
+   }  
 }
