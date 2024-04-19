@@ -1,0 +1,154 @@
+#include <GL/glut.h>
+#include <GL/glu.h>
+#include <iostream>
+#include <math.h>
+#define h 700
+#define w 700
+
+using namespace std;
+
+GLint xi, yi, r, ch = 1;
+
+void setpixel(GLint x, GLint y)
+{
+    if (ch == 1)
+    {
+        glColor3f(0.0, 0.0, 1.0);
+    }
+    if (ch == 2)
+    {
+        glColor3f(1.0, 0.0, 0.0);
+    }
+    if (ch == 3)
+    {
+        glColor3f(0.0, 1.0, 0.0);
+    }
+    if (ch == 4)
+    {
+        glColor3f(1.0, 1.0, 0.0);
+    }
+
+    glBegin(GL_POINTS);
+    glVertex2f(x, y);
+    glEnd();
+    glFlush();
+}
+
+void initialize()
+{
+    glClearColor(1.0, 1.0, 1.0, 0.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(-w / 2, w / 2, -h / 2, h / 2);
+}
+
+void choice()
+{
+    int i;
+    glPointSize(2.0);
+    for (i = -w; i < w; i++)
+    {
+        setpixel(0, i);
+        setpixel(i, 0);
+    }
+}
+
+void drawCircle(int xc, int yc, int x, int y)
+{
+    setpixel(xc + x, yc + y);
+    setpixel(xc - x, yc + y);
+    setpixel(xc + x, yc - y);
+    setpixel(xc - x, yc - y);
+    setpixel(xc + y, yc + x);
+    setpixel(xc - y, yc + x);
+    setpixel(xc + y, yc - x);
+    setpixel(xc - y, yc - x);
+}
+
+class circle
+{
+public:
+    void breshc()
+    {
+        cout << "Enter the radius: ";
+        cin >> r;
+        GLint x = 0, y = r;
+        GLint s = 3 - 2 * r;
+        drawCircle(xi, yi, x, y);
+        while (y >= x)
+        {
+            x++;
+            if (s > 0)
+            {
+                s = s + 4 * (x - y) + 10;
+                y--;
+            }
+            else
+            {
+                s = s + 4 * x + 6;
+            }
+            drawCircle(xi, yi, x, y);
+        }
+    }
+};
+
+circle c;
+
+void keyboard(unsigned char key, int x, int y)
+{
+    if (key == 27)
+        exit(0);
+    else
+        cout << "You entered the" << key;
+}
+
+void menu(int item)
+{
+    ch = item;
+    if (item >= 1 && item <= 4)
+    {
+        c.breshc();
+    }
+    else if (item == 5)
+    {
+        exit(0);
+    }
+}
+
+void mouse(int button, int state, int x, int y)
+{
+    if (state == GLUT_DOWN)
+    {
+        xi = x - 350;
+        yi = 350 - y;
+        cout << xi << "\t";
+        cout << yi << "\n";
+        glPointSize(2.0);
+        glBegin(GL_POINTS);
+        glVertex2i(xi, yi);
+        glEnd();
+        glFlush();
+    }
+}
+
+int main(int argc, char **argv)
+{
+    glutInit(&argc, argv);
+    glutInitWindowSize(h, w);
+    glutInitWindowPosition(100, 0);
+    glutCreateWindow("Bresenham circle Here!!");
+    initialize();
+    glutDisplayFunc(choice);
+    glutMouseFunc(mouse);
+    glutKeyboardFunc(keyboard);
+    glutCreateMenu(menu);
+    glutAddMenuEntry("bresenham_blue circle", 1);
+    glutAddMenuEntry("bresenham_red circle", 2);
+    glutAddMenuEntry("bresenham_green circle", 3);
+    glutAddMenuEntry("bresenham_yellow circle", 4);
+    glutAddMenuEntry("EXIT", 5);
+    glutAttachMenu(GLUT_MIDDLE_BUTTON);
+    glutMainLoop();
+    return 0;
+}
