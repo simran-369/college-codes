@@ -1,0 +1,113 @@
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.35 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2023, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show table
+    -> show databases
+    ->
+    -> show databases;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'show databases
+
+show databases' at line 2
+mysql> show database;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'database' at line 1
+mysql> show tables;
+ERROR 1046 (3D000): No database selected
+mysql> create database student;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| student            |
+| sys                |
+| world              |
++--------------------+
+7 rows in set (0.05 sec)
+
+mysql> create table(
+    -> ID int unsigned;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(
+ID int unsigned' at line 1
+mysql> create table myTable(
+    -> ID int unsigned null;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 2
+mysql> create table my (
+    -> ID int unsigned null,
+    -> name varchar(20),
+    -> branch varchar(20)
+    -> );
+ERROR 1046 (3D000): No database selected
+mysql> use student;
+Database changed
+mysql> create table my (
+    ->     -> ID int unsigned null,
+    ->     -> name varchar(20),
+    ->     -> branch varchar(20)
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-> ID int unsigned null,
+    -> name varchar(20),
+    -> branch varchar(20)' at line 2
+mysql> create table my(
+    -> ID int unsigned null,
+    -> name varchar(20),
+    -> branch varchar(25)
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> select * from my;
+Empty set (0.03 sec)
+
+mysql> show table my;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'my' at line 1
+mysql> describe my;
++--------+--------------+------+-----+---------+-------+
+| Field  | Type         | Null | Key | Default | Extra |
++--------+--------------+------+-----+---------+-------+
+| ID     | int unsigned | YES  |     | NULL    |       |
+| name   | varchar(20)  | YES  |     | NULL    |       |
+| branch | varchar(25)  | YES  |     | NULL    |       |
++--------+--------------+------+-----+---------+-------+
+3 rows in set (0.04 sec)
+
+mysql> insert into my(ID, name, branch) values (1,'simran','IT'),(2,'neer','mech');
+Query OK, 2 rows affected (0.03 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from my;
++------+--------+--------+
+| ID   | name   | branch |
++------+--------+--------+
+|    1 | simran | IT     |
+|    2 | neer   | mech   |
++------+--------+--------+
+2 rows in set (0.00 sec)
+
+mysql> update my set name='avni' where branch='mech';
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from my;
++------+--------+--------+
+| ID   | name   | branch |
++------+--------+--------+
+|    1 | simran | IT     |
+|    2 | avni   | mech   |
++------+--------+--------+
+2 rows in set (0.00 sec)
+
+mysql>

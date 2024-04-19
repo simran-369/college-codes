@@ -1,0 +1,308 @@
+*******************************ass 7******************************************
+mysql> create database dbse;
+Query OK, 1 row affected (0.04 sec)
+
+mysql> use dbse;
+Database changed
+mysql> create table Department(did int primary key, dname varchar(20));
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> create table Employee(empid int primary key auto_increment, ename varchar(20) not null, salary int, did int, check (salary>15000), foreign key(did) references Department(did));
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> create table Project(Pid int primary key, Pname varchar(20), LocationId int);
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> alter table Employee add Pid int;
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table Employee add foreign key(Pid) references Project(Pid);
+Query OK, 0 rows affected (0.12 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> describe employee;
++--------+-------------+------+-----+---------+----------------+
+| Field  | Type        | Null | Key | Default | Extra          |
++--------+-------------+------+-----+---------+----------------+
+| empid  | int         | NO   | PRI | NULL    | auto_increment |
+| ename  | varchar(20) | NO   |     | NULL    |                |
+| salary | int         | YES  |     | NULL    |                |
+| did    | int         | YES  | MUL | NULL    |                |
+| Pid    | int         | YES  | MUL | NULL    |                |
++--------+-------------+------+-----+---------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> describe department;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| did   | int         | NO   | PRI | NULL    |       |
+| dname | varchar(20) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> describe project;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| Pid        | int         | NO   | PRI | NULL    |       |
+| Pname      | varchar(20) | YES  |     | NULL    |       |
+| LocationId | int         | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql>  alter table Employee add doj date;
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> describe employee;
++--------+-------------+------+-----+---------+----------------+
+| Field  | Type        | Null | Key | Default | Extra          |
++--------+-------------+------+-----+---------+----------------+
+| empid  | int         | NO   | PRI | NULL    | auto_increment |
+| ename  | varchar(20) | NO   |     | NULL    |                |
+| salary | int         | YES  |     | NULL    |                |
+| did    | int         | YES  | MUL | NULL    |                |
+| Pid    | int         | YES  | MUL | NULL    |                |
+| doj    | date        | YES  |     | NULL    |                |
++--------+-------------+------+-----+---------+----------------+
+6 rows in set (0.00 sec)
+
+mysql> insert into project values(1,"harsh", 44);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into project values(2,"simmi", 53);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into project values(3,"neeru", 65);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into project values(4,"dholu", 77);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into department values(01,"ram");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into department values(02,"seema");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into department values(03,"rakesh");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into department values(04,"dev");
+Query OK, 1 row affected (0.04 sec)
+
+
+mysql> insert into employee values(1,"sim",39000,02,1,'2006-10-26');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into employee values(2,"nirmal",45000,01,2,'2010-09-22');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into employee values(3,"avni",60000,03,2,'2012-04-10');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into employee values(4,"anshu",60000,03,4,'2015-06-10');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from employee;
++-------+--------+--------+------+------+------------+
+| empid | ename  | salary | did  | Pid  | doj        |
++-------+--------+--------+------+------+------------+
+|     1 | sim    |  39000 |    2 |    1 | 2006-10-26 |
+|     2 | nirmal |  45000 |    1 |    2 | 2010-09-22 |
+|     3 | avni   |  60000 |    3 |    2 | 2012-04-10 |
+|     4 | anshu  |  60000 |    3 |    4 | 2015-06-10 |
++-------+--------+--------+------+------+------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from department;
++-----+--------+
+| did | dname  |
++-----+--------+
+|   1 | ram    |
+|   2 | seema  |
+|   3 | rakesh |
+|   4 | dev    |
++-----+--------+
+4 rows in set (0.00 sec)
+
+mysql> select * from project;
++-----+-------+------------+
+| Pid | Pname | LocationId |
++-----+-------+------------+
+|   1 | harsh |         44 |
+|   2 | simmi |         53 |
+|   3 | neeru |         65 |
+|   4 | dholu |         77 |
++-----+-------+------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from employee where salary>20000 and pid=2;
++-------+--------+--------+------+------+------------+
+| empid | ename  | salary | did  | Pid  | doj        |
++-------+--------+--------+------+------+------------+
+|     2 | nirmal |  45000 |    1 |    2 | 2010-09-22 |
+|     3 | avni   |  60000 |    3 |    2 | 2012-04-10 |
++-------+--------+--------+------+------+------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from employee where did<>2;
++-------+--------+--------+------+------+------------+
+| empid | ename  | salary | did  | Pid  | doj        |
++-------+--------+--------+------+------+------------+
+|     2 | nirmal |  45000 |    1 |    2 | 2010-09-22 |
+|     3 | avni   |  60000 |    3 |    2 | 2012-04-10 |
+|     4 | anshu  |  60000 |    3 |    4 | 2015-06-10 |
++-------+--------+--------+------+------+------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from employee where doj between '2012-01-01' and '2012-12-31';
++-------+-------+--------+------+------+------------+
+| empid | ename | salary | did  | Pid  | doj        |
++-------+-------+--------+------+------+------------+
+|     3 | avni  |  60000 |    3 |    2 | 2012-04-10 |
++-------+-------+--------+------+------+------------+
+1 row in set (0.00 sec)
+
+mysql> select * from Employee where EName like 'A%';
++-------+-------+--------+------+------+------------+
+| empid | ename | salary | did  | Pid  | doj        |
++-------+-------+--------+------+------+------------+
+|     3 | avni  |  60000 |    3 |    2 | 2012-04-10 |
+|     4 | anshu |  60000 |    3 |    4 | 2015-06-10 |
++-------+-------+--------+------+------+------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from department where dName like '_____';
++-----+-------+
+| did | dname |
++-----+-------+
+|   2 | seema |
++-----+-------+
+1 row in set (0.00 sec)
+
+mysql> select length(EName) from Employee;
++---------------+
+| length(EName) |
++---------------+
+|             3 |
+|             6 |
+|             4 |
+|             5 |
++---------------+
+4 rows in set (0.00 sec)
+
+mysql> select abs(salary) from Employee;
++-------------+
+| abs(salary) |
++-------------+
+|       39000 |
+|       45000 |
+|       60000 |
+|       60000 |
++-------------+
+4 rows in set (0.04 sec)
+
+mysql> select sum(Salary) from Employee where DId=3;
++-------------+
+| sum(Salary) |
++-------------+
+|      120000 |
++-------------+
+1 row in set (0.04 sec)
+
+mysql> select DId, sum(salary) from Employee group by DId;
++------+-------------+
+| DId  | sum(salary) |
++------+-------------+
+|    1 |       45000 |
+|    2 |       39000 |
+|    3 |      120000 |
++------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from employee where Salary in (select max(Salary) from employee);
++-------+-------+--------+------+------+------------+
+| empid | ename | salary | did  | Pid  | doj        |
++-------+-------+--------+------+------+------------+
+|     3 | avni  |  60000 |    3 |    2 | 2012-04-10 |
+|     4 | anshu |  60000 |    3 |    4 | 2015-06-10 |
++-------+-------+--------+------+------+------------+
+2 rows in set (0.03 sec)
+
+mysql> select * from employee where Salary not in (select max(Salary) from employee);
++-------+--------+--------+------+------+------------+
+| empid | ename  | salary | did  | Pid  | doj        |
++-------+--------+--------+------+------+------------+
+|     1 | sim    |  39000 |    2 |    1 | 2006-10-26 |
+|     2 | nirmal |  45000 |    1 |    2 | 2010-09-22 |
++-------+--------+--------+------+------+------------+
+2 rows in set (0.00 sec)
+
+mysql> select Salary from employee where Salary <> any (select Salary from employee as e where empid=1);
++--------+
+| Salary |
++--------+
+|  45000 |
+|  60000 |
+|  60000 |
++--------+
+3 rows in set (0.00 sec)
+
+mysql> select Salary from employee where Salary > some (select Salary from employee as e where empid=2);
++--------+
+| Salary |
++--------+
+|  60000 |
+|  60000 |
++--------+
+2 rows in set (0.00 sec)
+
+mysql> select * from Employee natural join Department;
++------+-------+--------+--------+------+------------+--------+
+| did  | empid | ename  | salary | Pid  | doj        | dname  |
++------+-------+--------+--------+------+------------+--------+
+|    2 |     1 | sim    |  39000 |    1 | 2006-10-26 | seema  |
+|    1 |     2 | nirmal |  45000 |    2 | 2010-09-22 | ram    |
+|    3 |     3 | avni   |  60000 |    2 | 2012-04-10 | rakesh |
+|    3 |     4 | anshu  |  60000 |    4 | 2015-06-10 | rakesh |
++------+-------+--------+--------+------+------------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select * from Employee inner join Department on Employee.DID=Department.DID;
++-------+--------+--------+------+------+------------+-----+--------+
+| empid | ename  | salary | did  | Pid  | doj        | did | dname  |
++-------+--------+--------+------+------+------------+-----+--------+
+|     1 | sim    |  39000 |    2 |    1 | 2006-10-26 |   2 | seema  |
+|     2 | nirmal |  45000 |    1 |    2 | 2010-09-22 |   1 | ram    |
+|     3 | avni   |  60000 |    3 |    2 | 2012-04-10 |   3 | rakesh |
+|     4 | anshu  |  60000 |    3 |    4 | 2015-06-10 |   3 | rakesh |
++-------+--------+--------+------+------+------------+-----+--------+
+4 rows in set (0.00 sec)
+
+mysql> select * from Employee left join Department on Employee.DID=Department.DID;
++-------+--------+--------+------+------+------------+------+--------+
+| empid | ename  | salary | did  | Pid  | doj        | did  | dname  |
++-------+--------+--------+------+------+------------+------+--------+
+|     1 | sim    |  39000 |    2 |    1 | 2006-10-26 |    2 | seema  |
+|     2 | nirmal |  45000 |    1 |    2 | 2010-09-22 |    1 | ram    |
+|     3 | avni   |  60000 |    3 |    2 | 2012-04-10 |    3 | rakesh |
+|     4 | anshu  |  60000 |    3 |    4 | 2015-06-10 |    3 | rakesh |
++-------+--------+--------+------+------+------------+------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select * from Employee right join Department on Employee.DID=Department.DID;
++-------+--------+--------+------+------+------------+-----+--------+
+| empid | ename  | salary | did  | Pid  | doj        | did | dname  |
++-------+--------+--------+------+------+------------+-----+--------+
+|     2 | nirmal |  45000 |    1 |    2 | 2010-09-22 |   1 | ram    |
+|     1 | sim    |  39000 |    2 |    1 | 2006-10-26 |   2 | seema  |
+|     4 | anshu  |  60000 |    3 |    4 | 2015-06-10 |   3 | rakesh |
+|     3 | avni   |  60000 |    3 |    2 | 2012-04-10 |   3 | rakesh |
+|  NULL | NULL   |   NULL | NULL | NULL | NULL       |   4 | dev    |
++-------+--------+--------+------+------+------------+-----+--------+
+5 rows in set (0.00 sec)
+
+mysql>drop database dbse;

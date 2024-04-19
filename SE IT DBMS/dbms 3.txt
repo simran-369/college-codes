@@ -1,0 +1,134 @@
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.35 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2023, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| employee           |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| world              |
++--------------------+
+7 rows in set (0.09 sec)
+
+mysql> use employee;
+Database changed
+mysql> show tables;
++--------------------+
+| Tables_in_employee |
++--------------------+
+| department         |
+| employee           |
+| project            |
++--------------------+
+3 rows in set (0.05 sec)
+
+mysql> select * from project;
++-----+----------+------------+
+| pid | pname    | locationID |
++-----+----------+------------+
+|   1 | ahmdabad |          5 |
+|   3 | unmg     |          8 |
++-----+----------+------------+
+2 rows in set (0.05 sec)
+
+mysql> select * from department;
++-----+-----------+
+| did | dname     |
++-----+-----------+
+|   1 | marketing |
+|   2 | executive |
+|   3 | finance   |
++-----+-----------+
+3 rows in set (0.04 sec)
+
+mysql> select * from project;
++-----+----------+------------+
+| pid | pname    | locationID |
++-----+----------+------------+
+|   1 | ahmdabad |          5 |
+|   3 | unmg     |          8 |
++-----+----------+------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from employee;
++-------+---------+------------+--------+------+
+| empid | ename   | doj        | salary | did  |
++-------+---------+------------+--------+------+
+|    11 | neer    | 2006-01-01 |  30000 |    1 |
+|    22 | neha    | 2006-10-20 |  28000 |    2 |
+|    33 | shubham | 2007-05-20 |  68000 |    3 |
++-------+---------+------------+--------+------+
+3 rows in set (0.00 sec)
+
+mysql> select * from employee where did is null;
+Empty set (0.01 sec)
+
+mysql> select * from employee where did is not null;
++-------+---------+------------+--------+------+
+| empid | ename   | doj        | salary | did  |
++-------+---------+------------+--------+------+
+|    11 | neer    | 2006-01-01 |  30000 |    1 |
+|    22 | neha    | 2006-10-20 |  28000 |    2 |
+|    33 | shubham | 2007-05-20 |  68000 |    3 |
++-------+---------+------------+--------+------+
+3 rows in set (0.02 sec)
+
+mysql> select * from employee where did<>2;
++-------+---------+------------+--------+------+
+| empid | ename   | doj        | salary | did  |
++-------+---------+------------+--------+------+
+|    11 | neer    | 2006-01-01 |  30000 |    1 |
+|    33 | shubham | 2007-05-20 |  68000 |    3 |
++-------+---------+------------+--------+------+
+2 rows in set (0.02 sec)
+
+mysql> select * from project where pname like '_n%';
++-----+-------+------------+
+| pid | pname | locationID |
++-----+-------+------------+
+|   3 | unmg  |          8 |
++-----+-------+------------+
+1 row in set (0.03 sec)
+
+mysql> select sum(salary) from Employee;
++-------------+
+| sum(salary) |
++-------------+
+|      126000 |
++-------------+
+1 row in set (0.01 sec)
+
+mysql> select count(empid) from Employee;
++--------------+
+| count(empid) |
++--------------+
+|            3 |
++--------------+
+1 row in set (0.01 sec)
+
+mysql> select did, sum(salary) from employee group by did;
++------+-------------+
+| did  | sum(salary) |
++------+-------------+
+|    1 |       30000 |
+|    2 |       28000 |
+|    3 |       68000 |
++------+-------------+
+3 rows in set (0.03 sec)
+
+mysql>
