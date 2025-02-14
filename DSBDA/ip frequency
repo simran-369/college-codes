@@ -1,0 +1,85 @@
+package asg1;
+
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import java.io.IOException;
+
+class LogMapper extends Mapper<Object, Text, Text, IntWritable> {
+
+    private Text ipAddress = new Text();
+    private IntWritable one = new IntWritable(1);
+
+    @Override
+    protected void map(Object key, Text value, Context context) throws IOException, InterruptedException {
+        String line = value.toString();
+        // Extract IP address and timestamp
+        String[] logParts = line.split(" ");
+        if (logParts.length > 3) {
+            ipAddress.set(logParts[0]);  // First part is the IP address
+            context.write(ipAddress, one);  // Emit the IP and count
+        }
+    }
+}
+
+
+class LogReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
+
+    private IntWritable totalRequests = new IntWritable();
+    private Text maxIp = new Text();
+    private int maxCount=0;
+    @Override
+    protected void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
+        int sum = 0;
+        for (IntWritable val : values) {
+            sum += val.get();  // Sum the total requests per IP address
+        }
+        totalRequests.set(sum);
+        context.write(key, totalRequests); 
+        //track the ip with the highest count
+        if(sum>maxCount){
+        	maxCount=sum;
+        	maxIp.set(key);
+        }
+    }
+    
+    protected void cleanup(Context context) throws IOException, InterruptedException{
+    	System.out.println(maxIp.toString()+" IP has the maximum frequency of "+ maxCount);
+    }
+    
+    
+}
+
+public class asg1 {
+    
+    public static void main(String[] args) throws Exception {
+        if (args.length != 2) {
+            System.err.println("Usage: LogAnalysisDriver <input path> <output path>");
+            System.exit(-1);
+        }
+
+        Configuration conf = new Configuration();
+        Job job = Job.getInstance(conf, "Log Analysis");
+        
+        job.setJarByClass(asg1.class);   
+        job.setMapperClass(LogMapper.class);
+        job.setReducerClass(LogReducer.class);
+        
+        // Set output types
+        job.setOutputKeyClass(Text.class);
+        job.setOutputValueClass(IntWritable.class);
+        
+        // Set input and output paths
+        FileInputFormat.addInputPath(job, new Path(args[0]));
+        FileOutputFormat.setOutputPath(job, new Path(args[1]));
+        
+        // Run the job
+        System.exit(job.waitForCompletion(true) ? 0 : 1);
+    }
+}
